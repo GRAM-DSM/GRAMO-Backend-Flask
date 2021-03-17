@@ -39,7 +39,8 @@ class Auth(Resource):
 
         return token_refresh(email)
 
-    # 구현
     @jwt_required
     def delete(self):
-        return logout()
+        email = get_jwt_identity()
+
+        return logout(email=email)
