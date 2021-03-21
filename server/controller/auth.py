@@ -4,21 +4,21 @@ from flask_jwt_extended import create_access_token, create_refresh_token
 
 import random
 
-from server.model import Session, Redis
+from server.model import session, Redis
 from server.model.user import User
 from server.controller.email import send_email
 
 
 def sign_up(email, password, name, major):
     add_user = User(email=email, password=generate_password_hash(password), name=name, major=major, email_status=1)
-    Session.add(add_user)
-    Session.commit()
+    session.add(add_user)
+    session.commit()
 
     return 201
 
 
 def send_email_code(email):
-    user = Session.query(User).filter(User.email == email).first()
+    user = session.query(User).filter(User.email == email).first()
 
     if user:
         return abort(409, 'this email is already in use')
@@ -49,7 +49,7 @@ def check_code(email, code):
 
 
 def login(email, password):
-    user = Session.query(User).filter(User.email == email).first()
+    user = session.query(User).filter(User.email == email).first()
 
     if not user:
         return abort(404, 'could not find account matching this email')
@@ -80,7 +80,6 @@ def token_refresh(email):
     }, 201
 
 
-# 구현
 def logout(email):
     # redis에서 사용자 가져옴
     user = Redis.get(email)

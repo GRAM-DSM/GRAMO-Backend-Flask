@@ -9,7 +9,7 @@ engine = create_engine(MYSQL_DB_URL)
 
 Base = declarative_base()
 
-session = sessionmaker(bind=engine)
-Session = session()
+Session = sessionmaker(bind=engine)
+session = Session()
 
 Redis = redis.StrictRedis(host='localhost', port=6379, db=0)

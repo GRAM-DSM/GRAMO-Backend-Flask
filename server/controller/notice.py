@@ -1,6 +1,6 @@
 from flask import abort
 
-from server.model import Session
+from server.model import session
 from server.model.notice import Notice
 from server.model.user import User
 
@@ -11,8 +11,8 @@ def create_notice(title, content, user_email):
 
     new_notice = Notice(title=title, content=content, user_email=user_email)
 
-    Session.add(new_notice)
-    Session.commit()
+    session.add(new_notice)
+    session.commit()
 
     # sendMessage(title="새로운 공지사항", body=title)
 
@@ -20,7 +20,7 @@ def create_notice(title, content, user_email):
 
 
 def get_notice_list(off_set, limit_num):
-    notice_list = Session.query(Notice).order_by(Notice.created_at.desc()).offset(off_set).limit(limit_num)
+    notice_list = session.query(Notice).order_by(Notice.created_at.desc()).offset(off_set).limit(limit_num)
 
     if notice_list:
         return {
@@ -37,12 +37,12 @@ def get_notice_list(off_set, limit_num):
 
 
 def delete_notice(notice_id):
-    del_notice = Session.query(Notice).filter(Notice.id == notice_id).first()
+    del_notice = session.query(Notice).filter(Notice.id == notice_id).first()
 
     if del_notice:
-        Session.delete(del_notice)
+        session.delete(del_notice)
 
-        Session.commit()
+        session.commit()
 
         return 204
     else:
@@ -50,10 +50,10 @@ def delete_notice(notice_id):
 
 
 def get_detail_notice(notice_id):
-    notice = Session.query(Notice).filter(Notice.id == notice_id).first()
+    notice = session.query(Notice).filter(Notice.id == notice_id).first()
 
     if notice:
-        user = Session.query(User).filter(User.email == notice.user_email).first()
+        user = session.query(User).filter(User.email == notice.user_email).first()
 
         return {
             "notice": {
