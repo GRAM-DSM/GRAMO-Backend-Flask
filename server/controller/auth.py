@@ -61,7 +61,7 @@ def login(email, password):
         refresh_token = create_refresh_token(identity=email)
 
         # redis에 refresh 토큰 저장
-        Redis.setex(name=email, value=refresh_token, time=3600)
+        Redis.setex(name=email, value=refresh_token, time=10800)
 
         return {
             "access_token": access_token,
