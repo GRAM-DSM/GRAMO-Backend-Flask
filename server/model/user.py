@@ -10,4 +10,4 @@ class User(Base):
     password = Column(VARCHAR(100), nullable=False)
     email_status = Column(INTEGER, nullable=False)
     name = Column(VARCHAR(10), nullable=False)
-    major = Column(Enum('android', 'ios', 'backend', 'design'))
+    major = Column(Enum('ANDROID', 'IOS', 'BACKEND', 'DESIGN'))
