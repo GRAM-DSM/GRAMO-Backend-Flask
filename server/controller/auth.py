@@ -21,7 +21,7 @@ def send_email_code(email):
     user = session.query(User).filter(User.email == email).first()
 
     if user:
-        return abort(409, 'this email is already in use')
+        abort(409, 'this email is already in use')
 
     code = f"{random.randint(111111, 999999):04d}"
     title = "GRAMO 이메일 인증 메일"
@@ -40,10 +40,10 @@ def check_code(email, code):
     user = Redis.get(email)
 
     if not user:
-        return abort(404, 'this email does not exist')
+        abort(404, 'this email does not exist')
 
     if user.code != code:
-        return abort(400, 'email and code does not match')
+        abort(400, 'email and code does not match')
 
     return 200
 
@@ -52,7 +52,7 @@ def login(email, password):
     user = session.query(User).filter(User.email == email).first()
 
     if not user:
-        return abort(404, 'could not find account matching this email')
+        abort(404, 'could not find account matching this email')
 
     check_user_pw = check_password_hash(user.password, password)
 
@@ -69,7 +69,7 @@ def login(email, password):
         }, 201
 
     else:
-        return abort(404, 'email and password does not match')
+        abort(404, 'email and password does not match')
 
 
 def token_refresh(email):
@@ -91,4 +91,4 @@ def logout(email):
         return 204
 
     else:
-        return abort(401, 'could not find token user')
+        abort(401, 'could not find token user')

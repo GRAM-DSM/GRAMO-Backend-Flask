@@ -33,7 +33,7 @@ def get_notice_list(off_set, limit_num):
             } for n in notice_list]
         }, 200
     else:
-        return abort(404, 'notice does not exist')
+        abort(404, 'notice does not exist')
 
 
 def delete_notice(notice_id):
@@ -46,7 +46,7 @@ def delete_notice(notice_id):
 
         return 204
     else:
-        return abort(404, 'could not find notice matching this id')
+        abort(404, 'could not find notice matching this id')
 
 
 def get_detail_notice(notice_id):
@@ -65,4 +65,4 @@ def get_detail_notice(notice_id):
         }, 200
 
     else:
-        return abort(404, 'could not find notice matching this id')
+        abort(404, 'could not find notice matching this id')
