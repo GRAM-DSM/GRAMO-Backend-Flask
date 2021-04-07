@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from server.controller.notice import create_notice, get_notice_list, delete_notice, get_detail_notice
 from server.view import validate_JSON
-from server.model.validator import CreateNoticeValidator
+from server.model.validator import CreateNoticeValidator, GetNoticeListValidator
 
 
 class GeneralNotice(Resource):
@@ -20,6 +20,7 @@ class GeneralNotice(Resource):
         return create_notice(title=title, content=content, user_email=user_email)
 
     @jwt_required
+    @validate_JSON(GetNoticeListValidator)
     def get(self):
         off_set = request['off_set']
         limit_num = request['limit_num']

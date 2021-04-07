@@ -1,5 +1,5 @@
 from schematics.models import Model
-from schematics.types import EmailType, StringType
+from schematics.types import EmailType, StringType, IntType
 
 
 class SignupValidator(Model):
@@ -17,3 +17,8 @@ class SigninValidator(Model):
 class CreateNoticeValidator(Model):
     title = StringType(serialized_name='title', required=True, max_length=50)
     content = StringType(serialized_name='content', required=True, max_length=1000)
+
+
+class GetNoticeListValidator(Model):
+    off_set = IntType(serialized_name='off_set', required=True)
+    limit_num = IntType(serialized_name='limit_num', required=True)
