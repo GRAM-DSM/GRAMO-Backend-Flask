@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from server.controller.auth import sign_up, send_email_code, check_code, login, logout, token_refresh
 from server.view import validate_JSON
-from server.model.validator import SignupValidator
+from server.model.validator import SignupValidator, SigninValidator
 
 
 class SignUp(Resource):
@@ -30,6 +30,7 @@ class SignUp(Resource):
 
 
 class Auth(Resource):
+    @validate_JSON(SigninValidator)
     def post(self):
         email = request.json['email']
         password = request.json['password']
