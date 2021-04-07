@@ -3,11 +3,14 @@ from flask_restful import Resource
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from server.controller.notice import create_notice, get_notice_list, delete_notice, get_detail_notice
+from server.view import validate_JSON
+from server.model.validator import CreateNoticeValidator
 
 
 class GeneralNotice(Resource):
 
     @jwt_required
+    @validate_JSON(CreateNoticeValidator)
     def post(self):
         title = request.json['title']
         content = request.json['content']
