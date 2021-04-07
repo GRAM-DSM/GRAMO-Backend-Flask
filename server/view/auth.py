@@ -1,23 +1,21 @@
-from flask import request, abort
+from flask import request
 from flask_restful import Resource
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from server.controller.auth import sign_up, send_email_code, check_code, login, logout, token_refresh
-from server.controller.form import SignupForm
+from server.view import validate_JSON
+from server.model.validator import SignupValidator
 
 
 class SignUp(Resource):
+    @validate_JSON(SignupValidator)
     def post(self):
-        # email = request.json['email']
-        # password = request.json['password']
-        # name = request.json['name']
-        # major = request.json['major']
+        email = request.json['email']
+        password = request.json['password']
+        name = request.json['name']
+        major = request.json['major']
 
-        form = SignupForm()
-        if form.validate():
-            return sign_up(email=form.email.data, password=form.password.data,
-                           name=form.name.data, major=form.major.data)
-        return abort(400, 'bad request')
+        return sign_up(email=email, password=password, name=name, major=major)
 
     def get(self):
         email = request.json['email']
