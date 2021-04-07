@@ -36,15 +36,18 @@ def get_notice_list(off_set, limit_num):
         abort(404, 'notice does not exist')
 
 
-def delete_notice(notice_id):
+def delete_notice(notice_id, user_email):
     del_notice = session.query(Notice).filter(Notice.id == notice_id).first()
 
     if del_notice:
-        session.delete(del_notice)
+        if del_notice.user_email == user_email:
+            session.delete(del_notice)
 
-        session.commit()
+            session.commit()
 
-        return 204
+            return 204
+        else:
+            abort(403, 'could not delete notice created by others')
     else:
         abort(404, 'could not find notice matching this id')
 
