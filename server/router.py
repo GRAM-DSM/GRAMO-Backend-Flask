@@ -4,7 +4,6 @@ from flask_restful import Api
 bp = Blueprint("gramo", __name__, url_prefix="")
 api_basic = Api(bp)
 
-# url 미정
 from server.view.auth import SignUp
 api_basic.add_resource(SignUp, "/email")
 
