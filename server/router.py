@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask_restful import Api
 
-bp = Blueprint("post", __name__, url_prefix="")
+bp = Blueprint("gramo", __name__, url_prefix="")
 api_basic = Api(bp)
 
 # url 미정
