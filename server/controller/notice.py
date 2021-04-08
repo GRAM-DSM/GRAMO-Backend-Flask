@@ -29,7 +29,7 @@ def get_notice_list(off_set, limit_num):
                 "title": n.title,
                 "content": n.content,
                 "user_email": n.user_email,
-                "created_at": n.created_at
+                "created_at": str(n.created_at)
             } for n in notice_list]
         }, 200
     else:
