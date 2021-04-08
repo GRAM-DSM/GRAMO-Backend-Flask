@@ -10,11 +10,16 @@ from server.controller.email import send_email
 
 
 def sign_up(email, password, name, major):
+    origin_user = session.query(User).filter(User.email == email).first()
     add_user = User(email=email, password=generate_password_hash(password), name=name, major=major, email_status=1)
-    session.add(add_user)
-    session.commit()
 
-    return 201
+    if origin_user:
+        abort(409, "this email is already in use")
+    else:
+        session.add(add_user)
+        session.commit()
+
+        return 201
 
 
 def send_email_code(email):
