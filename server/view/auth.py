@@ -17,12 +17,16 @@ class SignUp(Resource):
 
         return sign_up(email=email, password=password, name=name, major=major)
 
-    def get(self):
+
+class SendEmail(Resource):
+    def post(self):
         email = request.json['email']
 
         return send_email_code(email=email)
 
-    def put(self):
+
+class CheckEmailCode(Resource):
+    def post(self):
         email = request.json['email']
         code = request.json['code']
 
@@ -38,7 +42,7 @@ class Auth(Resource):
         return login(email=email, password=password)
 
     @jwt_required(refresh=True)
-    def put(self):
+    def get(self):
         email = get_jwt_identity()
 
         return token_refresh(email)
