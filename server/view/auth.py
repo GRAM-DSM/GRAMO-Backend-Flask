@@ -43,7 +43,7 @@ class Auth(Resource):
 
         return token_refresh(email)
 
-    @jwt_required
+    @jwt_required()
     def delete(self):
         email = get_jwt_identity()
 

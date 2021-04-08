@@ -9,7 +9,7 @@ from server.model.validator import CreateNoticeValidator, GetNoticeListValidator
 
 class GeneralNotice(Resource):
 
-    @jwt_required
+    @jwt_required()
     @validate_JSON(CreateNoticeValidator)
     def post(self):
         title = request.json['title']
@@ -19,7 +19,7 @@ class GeneralNotice(Resource):
 
         return create_notice(title=title, content=content, user_email=user_email)
 
-    @jwt_required
+    @jwt_required()
     @validate_JSON(GetNoticeListValidator)
     def get(self):
         off_set = request['off_set']
@@ -30,12 +30,12 @@ class GeneralNotice(Resource):
 
 class SpecificNotice(Resource):
 
-    @jwt_required
+    @jwt_required()
     def delete(self, notice_id):
         user_email = get_jwt_identity()
 
         return delete_notice(notice_id=notice_id, user_email=user_email)
 
-    @jwt_required
+    @jwt_required()
     def get(self, notice_id):
         return get_detail_notice(notice_id=notice_id)
