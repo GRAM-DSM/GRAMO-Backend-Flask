@@ -56,9 +56,6 @@ def check_code(email, code):
 def login(email, password):
     user = session.query(User).filter(User.email == email).first()
 
-    if not user:
-        abort(404, 'could not find account matching this email')
-
     check_user_pw = check_password_hash(user.password, password)
 
     if check_user_pw:
@@ -74,7 +71,7 @@ def login(email, password):
         }, 201
 
     else:
-        abort(409, 'email and password does not match')
+        abort(404, 'email and password does not match')
 
 
 def token_refresh(email):
