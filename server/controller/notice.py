@@ -22,18 +22,15 @@ def create_notice(title, content, user_email):
 def get_notice_list(off_set, limit_num):
     notice_list = session.query(Notice).order_by(Notice.created_at.desc()).offset(off_set).limit(limit_num)
 
-    if notice_list:
-        return {
-            "notice": [{
-                "id": n.id,
-                "title": n.title,
-                "content": n.content,
-                "user_email": n.user_email,
-                "created_at": str(n.created_at)
-            } for n in notice_list]
-        }, 200
-    else:
-        abort(404, 'notice does not exist')
+    return {
+        "notice": [{
+            "id": n.id,
+            "title": n.title,
+            "content": n.content,
+            "user_email": n.user_email,
+            "created_at": str(n.created_at)
+        } for n in notice_list]
+    }, 200
 
 
 def delete_notice(notice_id, user_email):
