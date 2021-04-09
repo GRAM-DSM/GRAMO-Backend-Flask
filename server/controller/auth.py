@@ -48,7 +48,7 @@ def check_code(email, code):
         abort(404, 'this email does not exist')
 
     if user.code != code:
-        abort(400, 'email and code does not match')
+        abort(409, 'email and code does not match')
 
     return 200
 
