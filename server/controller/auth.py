@@ -42,12 +42,12 @@ def send_email_code(email):
 
 def check_code(email, code):
     # redis에서 이메일코드 가져옴
-    user = Redis.get(email)
+    stored_code = int(Redis.get(email))
 
-    if not user:
+    if not stored_code:
         abort(404, 'this email does not exist')
 
-    if user.code != code:
+    if stored_code != code:
         abort(409, 'email and code does not match')
 
     return 200
