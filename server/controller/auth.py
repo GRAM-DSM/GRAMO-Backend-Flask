@@ -84,9 +84,9 @@ def token_refresh(email):
 
 def logout(email):
     # redis에서 사용자 가져옴
-    user = Redis.get(email)
+    token = Redis.get(email)
 
-    if user:
+    if token:
         # refresh 토큰 삭제
         Redis.delete(email)
 
