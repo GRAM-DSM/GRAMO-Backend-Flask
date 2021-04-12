@@ -9,7 +9,9 @@ from server.model.user import User
 
 def create_notice(title, content, user_email):
 
-    new_notice = Notice(title=title, content=content, user_email=user_email)
+    new_notice = Notice(title=title,
+                        content=content,
+                        user_email=user_email)
 
     session.add(new_notice)
     session.commit()

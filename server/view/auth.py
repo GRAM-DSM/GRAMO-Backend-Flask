@@ -15,7 +15,10 @@ class SignUp(Resource):
         name = request.json['name']
         major = request.json['major']
 
-        return sign_up(email=email, password=password, name=name, major=major)
+        return sign_up(email=email,
+                       password=password,
+                       name=name,
+                       major=major)
 
 
 class SendEmail(Resource):
@@ -32,7 +35,8 @@ class CheckEmailCode(Resource):
         email = request.json['email']
         code = request.json['code']
 
-        return check_code(email=email, code=code)
+        return check_code(email=email,
+                          code=code)
 
 
 class Auth(Resource):
@@ -41,7 +45,8 @@ class Auth(Resource):
         email = request.json['email']
         password = request.json['password']
 
-        return login(email=email, password=password)
+        return login(email=email,
+                     password=password)
 
     @jwt_required(refresh=True)
     def get(self):

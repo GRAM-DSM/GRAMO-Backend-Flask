@@ -11,11 +11,14 @@ from server.controller.email import send_email
 
 def sign_up(email, password, name, major):
     origin_user = session.query(User).filter(User.email == email).first()
-    add_user = User(email=email, password=generate_password_hash(password), name=name, major=major, email_status=1)
 
     if origin_user:
         abort(409, "this email is already in use")
     else:
+        add_user = User(email=email,
+                        password=generate_password_hash(password),
+                        name=name, major=major,
+                        email_status=1)
         session.add(add_user)
         session.commit()
 
@@ -32,16 +35,18 @@ def send_email_code(email):
     title = "GRAMO 이메일 인증 메일"
     content = f"이메일 인증 코드는 {code}입니다."
 
-    send_email(title=title, content=content, adress=email)
+    send_email(title=title,
+               content=content,
+               adress=email)
 
-    # redis에 이메일코드 저장
-    Redis.setex(name=email, value=code, time=180)
+    Redis.setex(name=email,
+                value=code,
+                time=180)
 
     return 200
 
 
 def check_code(email, code):
-    # redis에서 이메일코드 가져옴
     stored_code = int(Redis.get(email))
 
     if not stored_code:
@@ -62,8 +67,9 @@ def login(email, password):
         access_token = create_access_token(identity=email)
         refresh_token = create_refresh_token(identity=email)
 
-        # redis에 refresh 토큰 저장
-        Redis.setex(name=email, value=refresh_token, time=604800)
+        Redis.setex(name=email,
+                    value=refresh_token,
+                    time=604800)
 
         return {
             "access_token": access_token,
@@ -83,11 +89,9 @@ def token_refresh(email):
 
 
 def logout(email):
-    # redis에서 사용자 가져옴
     token = Redis.get(email)
 
     if token:
-        # refresh 토큰 삭제
         Redis.delete(email)
 
         return 204
