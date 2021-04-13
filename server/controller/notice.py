@@ -55,12 +55,12 @@ def delete_notice(notice_id, user_email):
 
 def get_detail_notice(notice_id):
     notice = session.query(Notice).filter(Notice.id == notice_id).first()
-
+    
     if notice:
         return {
             "notice": {
-                "name": notice.name,
-                "created_at": notice.created_at,
+                "name": notice.user_name,
+                "created_at": str(notice.created_at),
                 "title": notice.title,
                 "content": notice.content
             }
