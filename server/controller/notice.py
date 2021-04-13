@@ -8,10 +8,11 @@ from server.model.user import User
 
 
 def create_notice(title, content, user_email):
+    user = session.query(User).filter(User.email == user_email).first()
 
     new_notice = Notice(title=title,
                         content=content,
-                        user_email=user_email)
+                        user_name=user.name)
 
     session.add(new_notice)
     session.commit()
@@ -29,7 +30,7 @@ def get_notice_list(off_set, limit_num):
             "id": n.id,
             "title": n.title,
             "content": n.content,
-            "user_email": n.user_email,
+            "user_name": n.user_name,
             "created_at": str(n.created_at)
         } for n in notice_list]
     }, 200
@@ -39,7 +40,8 @@ def delete_notice(notice_id, user_email):
     del_notice = session.query(Notice).filter(Notice.id == notice_id).first()
 
     if del_notice:
-        if del_notice.user_email == user_email:
+        user = session.query(User).filter(User.email == user_email).first()
+        if del_notice.user_name == user.name:
             session.delete(del_notice)
 
             session.commit()
@@ -55,11 +57,9 @@ def get_detail_notice(notice_id):
     notice = session.query(Notice).filter(Notice.id == notice_id).first()
 
     if notice:
-        user = session.query(User).filter(User.email == notice.user_email).first()
-
         return {
             "notice": {
-                "name": user.name,
+                "name": notice.name,
                 "created_at": notice.created_at,
                 "title": notice.title,
                 "content": notice.content
