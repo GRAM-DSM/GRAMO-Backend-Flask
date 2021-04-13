@@ -72,6 +72,8 @@ def login(email, password):
                     time=604800)
 
         return {
+            "name": user.name,
+            "major": user.major,
             "access_token": access_token,
             "refresh_token": refresh_token
         }, 201
