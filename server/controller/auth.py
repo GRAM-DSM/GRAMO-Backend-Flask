@@ -7,8 +7,10 @@ import random
 from server.model import session, Redis
 from server.model.user import User
 from server.controller.email import send_email
+from server.controller.exception import check_exception
 
 
+@check_exception
 def sign_up(email, password, name, major):
     origin_user = session.query(User).filter(User.email == email).first()
 
@@ -58,6 +60,7 @@ def check_code(email, code):
     return 200
 
 
+@check_exception
 def login(email, password):
     user = session.query(User).filter(User.email == email).first()
 
