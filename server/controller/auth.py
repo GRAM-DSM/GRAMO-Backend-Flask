@@ -64,22 +64,24 @@ def check_code(email, code):
 def login(email, password):
     user = session.query(User).filter(User.email == email).first()
 
-    check_user_pw = check_password_hash(user.password, password)
+    if user:
+        check_user_pw = check_password_hash(user.password, password)
+        if check_user_pw:
+            access_token = create_access_token(identity=email)
+            refresh_token = create_refresh_token(identity=email)
 
-    if check_user_pw:
-        access_token = create_access_token(identity=email)
-        refresh_token = create_refresh_token(identity=email)
+            Redis.setex(name=email,
+                        value=refresh_token,
+                        time=604800)
 
-        Redis.setex(name=email,
-                    value=refresh_token,
-                    time=604800)
-
-        return {
-            "name": user.name,
-            "major": user.major,
-            "access_token": access_token,
-            "refresh_token": refresh_token
-        }, 201
+            return {
+                "name": user.name,
+                "major": user.major,
+                "access_token": access_token,
+                "refresh_token": refresh_token
+            }, 201
+        else:
+            abort(404, 'email and password does not match')
 
     else:
         abort(404, 'email and password does not match')
