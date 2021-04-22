@@ -112,6 +112,9 @@ def withdrawal(email):
     del_user = session.query(User).filter(User.email == email).first()
 
     if del_user:
+        token = Redis.get(email)
+        if token:
+            Redis.delete(email)
         session.delete(del_user)
         session.commit()
         return 204
