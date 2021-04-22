@@ -2,7 +2,7 @@ from flask import request
 from flask_restful import Resource
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-from server.controller.auth import sign_up, send_email_code, check_code, login, logout, token_refresh
+from server.controller.auth import sign_up, send_email_code, check_code, login, logout, token_refresh, withdrawal
 from server.view import validate_JSON
 from server.model.validator import SignupValidator, SendEmailCodeValidator, CheckEmailCodeValidator, SigninValidator
 
@@ -59,3 +59,11 @@ class Auth(Resource):
         email = get_jwt_identity()
 
         return logout(email=email)
+
+
+class Withdrawal(Resource):
+    @jwt_required()
+    def delete(self):
+        email = get_jwt_identity()
+
+        return withdrawal(email=email)

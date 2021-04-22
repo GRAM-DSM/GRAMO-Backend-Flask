@@ -105,3 +105,15 @@ def logout(email):
 
     else:
         abort(401, 'could not find token user')
+
+
+@check_exception
+def withdrawal(email):
+    del_user = session.query(User).filter(User.email == email).first()
+
+    if del_user:
+        session.delete(del_user)
+        session.commit()
+        return 204
+    else:
+        abort(401, 'could not find user')

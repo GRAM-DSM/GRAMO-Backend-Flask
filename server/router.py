@@ -16,6 +16,9 @@ api_basic.add_resource(CheckEmailCode, "/checkcode")
 from server.view.auth import Auth
 api_basic.add_resource(Auth, "/auth")
 
+from server.view.auth import Withdrawal
+api_basic.add_resource(Withdrawal, "/withdrawal")
+
 from server.view.notice import CreateNotice
 api_basic.add_resource(CreateNotice, "/notice")
 
