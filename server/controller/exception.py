@@ -10,7 +10,7 @@ def check_exception(func):
     def wrapper(*args, **kwargs):
         try:
             val = func(*args, **kwargs)
-        except SQLAlchemyError as e:
+        except:
             session.rollback()
             abort(418, 'database error')
         finally:
