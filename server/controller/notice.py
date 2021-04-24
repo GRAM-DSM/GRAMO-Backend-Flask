@@ -18,6 +18,7 @@ def create_notice(title, content, user_email):
 
     session.add(new_notice)
     session.commit()
+    session.close()
 
     # sendMessage(title="새로운 공지사항", body=title)
 
@@ -30,6 +31,8 @@ def get_notice_list(off_set, limit_num):
         .filter(Notice.user_email == User.email)\
         .order_by(Notice.created_at.desc())\
         .offset(off_set).limit(limit_num)
+
+    session.close()
 
     return {
         "notice": [{
@@ -51,6 +54,7 @@ def delete_notice(notice_id, user_email):
             session.delete(del_notice)
 
             session.commit()
+            session.close()
 
             return 204
         else:
@@ -64,6 +68,9 @@ def get_detail_notice(notice_id):
     notice = session.query(Notice, User).\
         filter(Notice.user_email == User.email).\
         filter(Notice.id == notice_id).all()
+
+    session.close()
+
     if notice:
         return {
             "notice": {
