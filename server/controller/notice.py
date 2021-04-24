@@ -14,7 +14,7 @@ def create_notice(title, content, user_email):
 
     new_notice = Notice(title=title,
                         content=content,
-                        user_name=user.name)
+                        user_email=user_email)
 
     session.add(new_notice)
     session.commit()
@@ -26,15 +26,18 @@ def create_notice(title, content, user_email):
 
 @check_exception
 def get_notice_list(off_set, limit_num):
-    notice_list = session.query(Notice).order_by(Notice.created_at.desc()).offset(off_set).limit(limit_num)
+    notice_list = session.query(Notice, User)\
+        .filter(Notice.user_email == User.email)\
+        .order_by(Notice.created_at.desc())\
+        .offset(off_set).limit(limit_num)
 
     return {
         "notice": [{
-            "id": n.id,
-            "title": n.title,
-            "content": n.content,
-            "user_name": n.user_name,
-            "created_at": str(n.created_at)
+            "id": n[0].id,
+            "title": n[0].title,
+            "content": n[0].content,
+            "user_name": n[1].name,
+            "created_at": str(n[0].created_at)
         } for n in notice_list]
     }, 200
 
@@ -44,8 +47,7 @@ def delete_notice(notice_id, user_email):
     del_notice = session.query(Notice).filter(Notice.id == notice_id).first()
 
     if del_notice:
-        user = session.query(User).filter(User.email == user_email).first()
-        if del_notice.user_name == user.name:
+        if del_notice.user_email == user_email:
             session.delete(del_notice)
 
             session.commit()
@@ -59,15 +61,16 @@ def delete_notice(notice_id, user_email):
 
 @check_exception
 def get_detail_notice(notice_id):
-    notice = session.query(Notice).filter(Notice.id == notice_id).first()
-    
+    notice = session.query(Notice, User).\
+        filter(Notice.user_email == User.email).\
+        filter(Notice.id == notice_id).all()
     if notice:
         return {
             "notice": {
-                "name": notice.user_name,
-                "created_at": str(notice.created_at),
-                "title": notice.title,
-                "content": notice.content
+                "name": notice[0][1].name,
+                "created_at": str(notice[0][0].created_at),
+                "title": notice[0][0].title,
+                "content": notice[0][0].content
             }
         }, 200
 

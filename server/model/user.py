@@ -1,4 +1,5 @@
 from sqlalchemy import Column, VARCHAR, Integer, Enum
+from sqlalchemy.orm import relationship
 
 from server.model import Base
 
@@ -11,3 +12,5 @@ class User(Base):
     email_status = Column(Integer, nullable=False)
     name = Column(VARCHAR(10), nullable=False)
     major = Column(Enum('ANDROID', 'IOS', 'BACKEND', 'DESIGN'))
+
+    user = relationship('Notice')
