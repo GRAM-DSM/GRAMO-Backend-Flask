@@ -10,8 +10,6 @@ from server.controller.exception import check_exception
 
 @check_exception
 def create_notice(title, content, user_email):
-    user = session.query(User).filter(User.email == user_email).first()
-
     new_notice = Notice(title=title,
                         content=content,
                         user_email=user_email)
@@ -32,16 +30,22 @@ def get_notice_list(off_set, limit_num):
         .order_by(Notice.created_at.desc())\
         .offset(off_set).limit(limit_num)
 
+    next_notice = session.query(Notice).offset(off_set + limit_num).first()
+    next_page = False
+    if next_notice:
+        next_page = True
+
     session.close()
 
     return {
         "notice": [{
-            "id": n[0].id,
-            "title": n[0].title,
-            "content": n[0].content,
-            "user_name": n[1].name,
-            "created_at": str(n[0].created_at)
-        } for n in notice_list]
+            "id": n.id,
+            "title": n.title,
+            "content": n.content,
+            "user_name": u.name,
+            "created_at": str(n.created_at)
+        } for n, u in notice_list],
+        "next_page": next_page
     }, 200
 
 
