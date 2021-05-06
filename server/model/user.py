@@ -11,6 +11,6 @@ class User(Base):
     password = Column(VARCHAR(100), nullable=False)
     email_status = Column(Integer, nullable=False)
     name = Column(VARCHAR(10), nullable=False)
-    major = Column(Enum('ANDROID', 'IOS', 'BACKEND', 'DESIGN'))
+    major = Column(Enum('ANDROID','IOS','BACKEND','DESIGN'))
 
-    user = relationship('Notice')
+    user = relationship('Notice', cascade="all, delete-orphan")
