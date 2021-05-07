@@ -23,14 +23,12 @@ def sign_up(email, password, name, major):
                         email_status=1)
         session.add(add_user)
         session.commit()
-        session.close()
 
         return 201
 
 
 def send_email_code(email):
     user = session.query(User).filter(User.email == email).first()
-    session.close()
 
     if user:
         abort(409, 'this email is already in use')
@@ -65,7 +63,6 @@ def check_code(email, code):
 @check_exception
 def login(email, password):
     user = session.query(User).filter(User.email == email).first()
-    session.close()
 
     if user:
         check_user_pw = check_password_hash(user.password, password)
@@ -120,7 +117,6 @@ def withdrawal(email):
             Redis.delete(email)
         session.delete(del_user)
         session.commit()
-        session.close()
         return 204
     else:
         abort(401, 'could not find user')
