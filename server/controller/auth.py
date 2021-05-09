@@ -49,12 +49,12 @@ def send_email_code(email):
 
 
 def check_code(email, code):
-    stored_code = int(Redis.get(email))
+    stored_code = Redis.get(email)
 
     if not stored_code:
         abort(404, 'this email does not exist')
 
-    if stored_code != code:
+    if int(stored_code) != int(code):
         abort(409, 'email and code does not match')
 
     return 200
