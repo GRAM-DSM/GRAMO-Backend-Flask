@@ -24,7 +24,9 @@ def sign_up(email, password, name, major):
         session.add(add_user)
         session.commit()
 
-        return 201
+        return {
+            "message": "success"
+        }, 201
 
 
 def send_email_code(email):
@@ -45,7 +47,9 @@ def send_email_code(email):
                 value=code,
                 time=180)
 
-    return 200
+    return {
+            "message": "success"
+    }, 200
 
 
 def check_code(email, code):
@@ -57,7 +61,9 @@ def check_code(email, code):
     if int(stored_code) != int(code):
         abort(409, 'email and code does not match')
 
-    return 200
+    return {
+            "message": "success"
+    }, 200
 
 
 @check_exception
@@ -101,7 +107,9 @@ def logout(email):
     if token:
         Redis.delete(email)
 
-        return 204
+        return {
+            "message": "success"
+        }, 204
 
     else:
         abort(401, 'could not find token user')
@@ -117,6 +125,8 @@ def withdrawal(email):
             Redis.delete(email)
         session.delete(del_user)
         session.commit()
-        return 204
+        return {
+            "message": "success"
+        }, 204
     else:
         abort(401, 'could not find user')

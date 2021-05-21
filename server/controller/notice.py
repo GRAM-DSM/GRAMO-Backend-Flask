@@ -19,7 +19,9 @@ def create_notice(title, content, user_email):
 
     # sendMessage(title="새로운 공지사항", body=title)
 
-    return 201
+    return {
+            "message": "success"
+        }, 201
 
 
 @check_exception
@@ -56,7 +58,9 @@ def delete_notice(notice_id, user_email):
 
             session.commit()
 
-            return 204
+            return {
+                "message": "success"
+            }, 204
         else:
             abort(403, 'could not delete notice created by others')
     else:
