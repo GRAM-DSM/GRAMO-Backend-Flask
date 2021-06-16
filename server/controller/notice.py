@@ -29,7 +29,7 @@ def get_notice_list(off_set, limit_num):
     notice_list = session.query(Notice, User)\
         .filter(Notice.user_email == User.email)\
         .order_by(Notice.created_at.desc())\
-        .offset(off_set).limit(limit_num)
+        .limit(limit_num).offset(off_set)
 
     next_notice = session.query(Notice).offset(off_set + limit_num).first()
     next_page = False
