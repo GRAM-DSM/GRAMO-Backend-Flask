@@ -38,12 +38,12 @@ def get_notice_list(off_set, limit_num):
 
     return {
         "notice": [{
-            "id": n.id,
-            "title": n.title,
-            "content": n.content,
-            "user_name": u.name,
-            "created_at": str(n.created_at)
-        } for n, u in notice_list],
+            "id": notice.id,
+            "title": notice.title,
+            "content": notice.content,
+            "user_name": user.name,
+            "created_at": str(notice.created_at)
+        } for notice, user in notice_list],
         "next_page": next_page
     }, 200
 
