@@ -1,4 +1,4 @@
-# GRAMO-Android
+# GRAMO-Backend-Flask
 
 ------
 
@@ -27,10 +27,3 @@
 ---
 
 From 2020.12.2 To 2021.3.31
-
-## Github 관리
-
----
-
-- 기능이 완성되면 pull request로 코드 리뷰 후 master에 merge
-
