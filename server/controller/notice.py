@@ -32,9 +32,7 @@ def get_notice_list(off_set, limit_num):
         .limit(limit_num).offset(off_set)
 
     next_notice = session.query(Notice).offset(off_set + limit_num).first()
-    next_page = False
-    if next_notice:
-        next_page = True
+    next_page = True if next_notice else False
 
     return {
         "notice": [{
