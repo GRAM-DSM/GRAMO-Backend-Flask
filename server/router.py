@@ -23,7 +23,7 @@ from server.view.notice import CreateNotice
 api_basic.add_resource(CreateNotice, "/notice")
 
 from server.view.notice import GetNotice
-api_basic.add_resource(GetNotice, "/notice/<int:page>")
+api_basic.add_resource(GetNotice, "/notice/list/<int:page>")
 
 from server.view.notice import SpecificNotice
 api_basic.add_resource(SpecificNotice, "/notice/<int:notice_id>")
