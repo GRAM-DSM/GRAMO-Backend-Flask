@@ -14,7 +14,7 @@ from server.controller.exception import check_exception
 def sign_up(email, password, name, major):
     origin_user = session.query(User).filter(User.email == email).first()
 
-    if origin_user:
+    if origin_user.scalar():
         abort(409, "this email is already in use")
     else:
         add_user = User(email=email,
@@ -30,7 +30,7 @@ def sign_up(email, password, name, major):
 
 
 def send_email_code(email):
-    user = session.query(User).filter(User.email == email).first()
+    user = session.query(User).filter(User.email == email).first().scalar()
 
     if user:
         abort(409, 'this email is already in use')
@@ -70,7 +70,7 @@ def check_code(email, code):
 def login(email, password):
     user = session.query(User).filter(User.email == email).first()
 
-    if user:
+    if user.scalar():
         check_user_pw = check_password_hash(user.password, password)
         if check_user_pw:
             access_token = create_access_token(identity=email)
@@ -119,7 +119,7 @@ def logout(email):
 def withdrawal(email):
     del_user = session.query(User).filter(User.email == email).first()
 
-    if del_user:
+    if del_user.scalar():
         token = Redis.get(email)
         if token:
             Redis.delete(email)

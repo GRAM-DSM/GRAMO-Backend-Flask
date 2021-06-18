@@ -34,7 +34,8 @@ def get_notice_list(page):
         .order_by(Notice.created_at.desc())\
         .limit(limit).offset(offset)
 
-    next_notice = session.query(Notice).limit(1).offset(offset + limit)
+    next_notice = session.query(Notice).limit(1).offset(offset + limit).scalar()
+
     next_page = True if next_notice else False
 
     return {
@@ -53,7 +54,7 @@ def get_notice_list(page):
 def delete_notice(notice_id, user_email):
     del_notice = session.query(Notice).filter(Notice.id == notice_id).first()
 
-    if del_notice:
+    if del_notice.scalar():
         if del_notice.user_email == user_email:
             session.delete(del_notice)
 
@@ -72,9 +73,9 @@ def delete_notice(notice_id, user_email):
 def get_detail_notice(notice_id):
     notice = session.query(Notice, User).\
         filter(Notice.user_email == User.email).\
-        filter(Notice.id == notice_id).all()
+        filter(Notice.id == notice_id)
 
-    if notice:
+    if notice.scalar():
         return {
             "notice": {
                 "name": notice[0][1].name,
