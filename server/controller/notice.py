@@ -52,7 +52,7 @@ def get_notice_list(page):
 
 @check_exception
 def delete_notice(notice_id, user_email):
-    del_notice = session.query(Notice).filter(Notice.id == notice_id).first()
+    del_notice = session.query(Notice).filter(Notice.id == notice_id)
 
     if del_notice.scalar():
         if del_notice.user_email == user_email:
