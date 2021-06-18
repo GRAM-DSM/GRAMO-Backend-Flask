@@ -12,9 +12,9 @@ from server.controller.exception import check_exception
 
 @check_exception
 def sign_up(email, password, name, major):
-    origin_user = session.query(User).filter(User.email == email)
+    origin_user = session.query(User).filter(User.email == email).scalar()
 
-    if origin_user.scalar():
+    if origin_user:
         abort(409, "this email is already in use")
     else:
         add_user = User(email=email,
@@ -71,6 +71,7 @@ def login(email, password):
     user = session.query(User).filter(User.email == email)
 
     if user.scalar():
+        user = user.first()
         check_user_pw = check_password_hash(user.password, password)
         if check_user_pw:
             access_token = create_access_token(identity=email)
@@ -123,6 +124,7 @@ def withdrawal(email):
         token = Redis.get(email)
         if token:
             Redis.delete(email)
+        del_user = del_user.first()
         session.delete(del_user)
         session.commit()
         return {

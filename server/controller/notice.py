@@ -56,6 +56,7 @@ def delete_notice(notice_id, user_email):
 
     if del_notice.scalar():
         if del_notice.user_email == user_email:
+            del_notice = del_notice.first()
             session.delete(del_notice)
 
             session.commit()
