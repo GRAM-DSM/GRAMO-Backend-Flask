@@ -6,7 +6,7 @@ from server.model import Base
 class Notice(Base):
     __tablename__ = 'notice_tbl'
 
-    id = Column(INTEGER, nullable=False, primary_key=True)
+    id = Column(INTEGER, nullable=False, primary_key=True, autoincrement=True)
     title = Column(VARCHAR(50), nullable=False)
     content = Column(VARCHAR(1000), nullable=False)
     user_email = Column(VARCHAR(30), ForeignKey('user_tbl.email'), nullable=False)
