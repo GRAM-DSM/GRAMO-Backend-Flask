@@ -76,15 +76,7 @@ def login(email, password):
     user = user.first()
 
     check_user_pw = check_password_hash(user.password, password)
-<<<<<<< Updated upstream
-    if check_user_pw:
-=======
-<<<<<<< HEAD
     if not check_user_pw:
-=======
-    if check_user_pw:
->>>>>>> master
->>>>>>> Stashed changes
         abort(404, 'email and password does not match')
 
     access_token = create_access_token(identity=email)
@@ -112,14 +104,15 @@ def token_refresh(email):
 def logout(email):
     token = Redis.get(email)
 
-    if not token:
+    if token:
+        Redis.delete(email)
+
+        return {
+            "message": "success"
+        }, 204
+
+    else:
         abort(401, 'could not find token user')
-
-    Redis.delete(email)
-
-    return {
-        "message": "success"
-    }, 204
 
 
 @check_exception
