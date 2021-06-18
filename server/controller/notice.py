@@ -25,13 +25,16 @@ def create_notice(title, content, user_email):
 
 
 @check_exception
-def get_notice_list(off_set, limit_num):
+def get_notice_list(page):
+    limit = 10
+    offset = page * limit
+
     notice_list = session.query(Notice, User)\
         .filter(Notice.user_email == User.email)\
         .order_by(Notice.created_at.desc())\
-        .limit(limit_num).offset(off_set)
+        .limit(limit).offset(offset)
 
-    next_notice = session.query(Notice).offset(off_set + limit_num).first()
+    next_notice = session.query(Notice).limit(1).offset(offset + limit)
     next_page = True if next_notice else False
 
     return {

@@ -25,10 +25,9 @@ class CreateNotice(Resource):
 class GetNotice(Resource):
 
     @jwt_required()
-    def get(self, off_set, limit_num):
+    def get(self, page):
 
-        return get_notice_list(off_set=off_set,
-                               limit_num=limit_num)
+        return get_notice_list(page=page)
 
 
 class SpecificNotice(Resource):
