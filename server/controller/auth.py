@@ -119,14 +119,17 @@ def withdrawal(email):
     del_user = session.query(User).filter(User.email == email)
 
     if del_user.scalar():
-        token = Redis.get(email)
-        if token:
-            Redis.delete(email)
-        del_user = del_user.first()
-        session.delete(del_user)
-        session.commit()
-        return {
-            "message": "success"
-        }, 204
-    else:
         abort(401, 'could not find user')
+
+    token = Redis.get(email)
+
+    if token:
+        Redis.delete(email)
+
+    del_user = del_user.first()
+    session.delete(del_user)
+    session.commit()
+
+    return {
+        "message": "success"
+    }, 204
