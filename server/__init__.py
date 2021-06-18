@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_jwt_extended import JWTManager
 from flask_mysqldb import MySQL
 
 from server.router import bp
@@ -8,6 +9,8 @@ from server.config import SECRET_KEY, ACCESS_TIMEOUT, REFRESH_TIMEOUT
 
 def create_app():
     _app = Flask(__name__)
+
+    jwt = JWTManager(_app)
 
     mysql = MySQL()
     mysql.init_app(_app)
