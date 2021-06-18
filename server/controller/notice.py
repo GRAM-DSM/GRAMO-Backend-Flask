@@ -54,20 +54,21 @@ def get_notice_list(page):
 def delete_notice(notice_id, user_email):
     del_notice = session.query(Notice).filter(Notice.id == notice_id)
 
-    if del_notice.scalar():
-        del_notice = del_notice.first()
-        if del_notice.user_email == user_email:
-            session.delete(del_notice)
-
-            session.commit()
-
-            return {
-                "message": "success"
-            }, 204
-        else:
-            abort(403, 'could not delete notice created by others')
-    else:
+    if not del_notice.scalar():
         abort(404, 'could not find notice matching this id')
+
+    del_notice = del_notice.first()
+
+    if not del_notice.user_email == user_email:
+        abort(403, 'could not delete notice created by others')
+
+    session.delete(del_notice)
+
+    session.commit()
+
+    return {
+        "message": "success"
+    }, 204
 
 
 @check_exception
