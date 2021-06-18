@@ -76,7 +76,15 @@ def login(email, password):
     user = user.first()
 
     check_user_pw = check_password_hash(user.password, password)
+<<<<<<< Updated upstream
     if check_user_pw:
+=======
+<<<<<<< HEAD
+    if not check_user_pw:
+=======
+    if check_user_pw:
+>>>>>>> master
+>>>>>>> Stashed changes
         abort(404, 'email and password does not match')
 
     access_token = create_access_token(identity=email)
