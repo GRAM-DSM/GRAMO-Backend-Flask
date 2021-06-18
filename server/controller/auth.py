@@ -70,29 +70,28 @@ def check_code(email, code):
 def login(email, password):
     user = session.query(User).filter(User.email == email)
 
-    if user.scalar():
-        user = user.first()
-        check_user_pw = check_password_hash(user.password, password)
-        if check_user_pw:
-            access_token = create_access_token(identity=email)
-            refresh_token = create_refresh_token(identity=email)
-
-            Redis.setex(name=email,
-                        value=refresh_token,
-                        time=604800)
-
-            return {
-                "name": user.name,
-                "major": user.major,
-                "access_token": access_token,
-                "refresh_token": refresh_token
-            }, 201
-        else:
-            abort(404, 'email and password does not match')
-
-    else:
+    if not user.scalar():
         abort(404, 'email and password does not match')
 
+    user = user.first()
+
+    check_user_pw = check_password_hash(user.password, password)
+    if check_user_pw:
+        abort(404, 'email and password does not match')
+
+    access_token = create_access_token(identity=email)
+    refresh_token = create_refresh_token(identity=email)
+
+    Redis.setex(name=email,
+                value=refresh_token,
+                time=604800)
+
+    return {
+        "name": user.name,
+        "major": user.major,
+        "access_token": access_token,
+        "refresh_token": refresh_token
+    }, 201
 
 def token_refresh(email):
     access_token = create_access_token(identity=email)
