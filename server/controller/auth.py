@@ -104,15 +104,14 @@ def token_refresh(email):
 def logout(email):
     token = Redis.get(email)
 
-    if token:
-        Redis.delete(email)
-
-        return {
-            "message": "success"
-        }, 204
-
-    else:
+    if not token:
         abort(401, 'could not find token user')
+
+    Redis.delete(email)
+
+    return {
+        "message": "success"
+    }, 204
 
 
 @check_exception
