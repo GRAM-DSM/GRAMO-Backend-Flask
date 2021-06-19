@@ -5,7 +5,7 @@ import redis
 
 from server.config import MYSQL_DB_URL
 
-engine = create_engine(MYSQL_DB_URL, pool_recycle=3600)
+engine = create_engine(MYSQL_DB_URL, pool_recycle=3600, echo=True)
 
 Base = declarative_base()
 
