@@ -1,5 +1,8 @@
 from flask import abort
 
+from pytz import timezone
+from datetime import datetime
+
 from server.model import session
 from server.model.notice import Notice
 from server.model.user import User
@@ -12,7 +15,8 @@ from server.controller.exception import check_exception
 def create_notice(title, content, user_email):
     new_notice = Notice(title=title,
                         content=content,
-                        user_email=user_email)
+                        user_email=user_email,
+                        created_at=datetime.now(timezone('Asia/Seoul')).strftime('%Y-%m-%d %H:%M:%S'))
 
     session.add(new_notice)
     session.commit()
