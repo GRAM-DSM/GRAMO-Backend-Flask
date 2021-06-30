@@ -48,7 +48,7 @@ def send_email_code(email):
                 time=180)
 
     return {
-            "message": "success"
+        "message": "success"
     }, 200
 
 
@@ -62,7 +62,7 @@ def check_code(email, code):
         abort(409, 'email and code does not match')
 
     return {
-            "message": "success"
+        "message": "success"
     }, 200
 
 
